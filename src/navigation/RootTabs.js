@@ -1,4 +1,5 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
 import CurrentWeatherScreen from '../screens/CurrentWeatherScreen';
 import ForecastScreen from '../screens/ForecastScreen';
 import FavoritesScreen from '../screens/FavoritesScreen';
@@ -7,12 +8,12 @@ import { colors } from '../theme';
 
 const Tab = createBottomTabNavigator();
 
-/** Shared tab-bar options so every screen looks the same. */
-const screenOptions = {
-  headerShown: false,
-  tabBarActiveTintColor: colors.accent,
-  tabBarLabelStyle: { fontWeight: '700', paddingBottom: 3 },
-  tabBarStyle: { height: 62, paddingTop: 6 },
+/** Icon name for each route, in both filled and outline variants. */
+const TAB_ICONS = {
+  Current: 'partly-sunny',
+  Forecast: 'calendar',
+  Favorites: 'star',
+  Settings: 'settings',
 };
 
 /**
@@ -21,7 +22,19 @@ const screenOptions = {
  */
 export default function RootTabs({ weather }) {
   return (
-    <Tab.Navigator screenOptions={screenOptions}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        tabBarActiveTintColor: colors.accent,
+        tabBarLabelStyle: { fontWeight: '700', paddingBottom: 3 },
+        tabBarStyle: { height: 62, paddingTop: 6 },
+        tabBarIcon: ({ color, size, focused }) => {
+          const base = TAB_ICONS[route.name];
+          const name = focused ? base : `${base}-outline`;
+          return <Ionicons name={name} size={size} color={color} />;
+        },
+      })}
+    >
       <Tab.Screen
         name="Current"
         options={{ title: 'Current Weather', tabBarLabel: 'Weather' }}

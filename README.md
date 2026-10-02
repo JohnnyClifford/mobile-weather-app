@@ -16,12 +16,13 @@ Mobile Weather App ports the weather dashboard into an Expo and React Native app
 
 ## Screenshots
 
-Add screenshots here after running the app:
+| Current Weather | Forecast |
+| --- | --- |
+| ![Current Weather](screenshots/current-weather.png) | ![Forecast](screenshots/forecast.png) |
 
-- Current weather: `screenshots/current-weather.png`
-- Forecast: `screenshots/forecast.png`
-- Favorites: `screenshots/favorites.png`
-- Settings: `screenshots/settings.png`
+| Favorites | Settings |
+| --- | --- |
+| ![Favorites](screenshots/favorites.png) | ![Settings](screenshots/settings.png) |
 
 ## Requirements and installation
 

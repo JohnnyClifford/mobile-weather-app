@@ -16,12 +16,28 @@ async function request(path) {
 }
 
 /** Fetch current conditions by city name. */
-export const fetchCurrentWeather = (city) => request(`/weather?q=${encodeURIComponent(city)}&units=metric`);
+export const fetchCurrentWeather = (city) =>
+  request(`/weather?q=${encodeURIComponent(city)}&units=metric`);
+
 /** Fetch the five-day forecast by city name. */
-export const fetchForecast = (city) => request(`/forecast?q=${encodeURIComponent(city)}&units=metric`);
+export const fetchForecast = (city) =>
+  request(`/forecast?q=${encodeURIComponent(city)}&units=metric`);
+
 /** Fetch current conditions by coordinates. */
-export const fetchWeatherByCoords = (lat, lon) => request(`/weather?lat=${lat}&lon=${lon}&units=metric`);
-/** Fetch UV index when supported by the configured OpenWeatherMap account. */
+export const fetchWeatherByCoords = (lat, lon) =>
+  request(`/weather?lat=${lat}&lon=${lon}&units=metric`);
+
+/**
+ * Fetch the UV index. This endpoint is not included in every OpenWeatherMap
+ * plan, so a failure here is treated as "UV unavailable" rather than an error
+ * for the whole screen.
+ */
 export async function fetchUVIndex(lat, lon) {
-  try { const data = await request(`/uvi?lat=${lat}&lon=${lon}`); return data.value ?? null; } catch { return null; }
+  try {
+    const data = await request(`/uvi?lat=${lat}&lon=${lon}`);
+    return data.value ?? null;
+  } catch (err) {
+    if (__DEV__) console.warn('UV index unavailable:', err.message);
+    return null;
+  }
 }

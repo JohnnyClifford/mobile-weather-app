@@ -3,8 +3,8 @@
 ## Project
 
 - **Name:** Mobile Weather App
-- **Repository:** To be added after the new GitHub repository is created
-- **Date:** September 25, 2026
+- **Repository:** https://github.com/JohnnyClifford/mobile-weather-app
+- **Date:** October 2, 2026
 
 ## Implemented features
 
@@ -13,7 +13,7 @@
 - City search and saved favorites persisted with AsyncStorage
 - Current location through Expo Location, including denied-permission guidance and a system settings shortcut
 - Daily local forecast reminder through Expo Notifications
-- Pull-to-refresh, four bottom tabs, weather-aware gradients, and Reanimated card entrance
+- Pull-to-refresh, four bottom tabs with icons, weather-aware gradients, and Reanimated card entrance
 - Friendly API errors and a React error boundary
 
 ## Design notes
@@ -24,10 +24,21 @@ The OpenWeatherMap key is injected at Expo config time via `OPENWEATHER_API_KEY`
 
 ## Screenshots
 
-Add screenshots from a physical device or emulator after reviewing the finished app.
+Captured from Expo Go on iOS.
 
-## Remaining review items
+- `screenshots/current-weather.png`
+- `screenshots/forecast.png`
+- `screenshots/favorites.png`
+- `screenshots/settings.png`
 
-- Add repository URL after GitHub setup
-- Add screenshots
-- Confirm API plan access for the requested current, forecast, and UV endpoints
+## Challenges faced
+
+- Porting the web app's CSS gradients to React Native required `expo-linear-gradient` and moving the gradient colors into a utility function so both the Current Weather and Forecast tabs share them.
+- Reanimated's API differs enough from Framer Motion that the card entrance transition had to be rewritten from scratch.
+- Keeping the OpenWeatherMap key out of version control while still making it available to the mobile client required reading the key through `app.config.js` rather than a Vite-style `.env` file.
+
+## Future enhancements
+
+- Add camera integration for a "report the weather" feature
+- Cache the last successful forecast for offline viewing
+- Add home-screen widget support

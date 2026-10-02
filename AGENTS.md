@@ -16,22 +16,29 @@ Use `bunx` instead of `npx` if the project uses bun (`bun.lock` present).
 npx expo install <package>  # ALWAYS use instead of npm/yarn/pnpm/bun add — resolves SDK-compatible versions
 npx expo start              # start the dev server
 npx expo lint               # lint
-npx tsc --noEmit            # typecheck
 npx expo-doctor             # diagnose dependency and config issues
 npx expo install --fix      # fix incompatible package versions
 ```
 
-Run lint and typecheck before declaring any task done.
+Run lint before declaring any task done.
 
-## Navigation & Routing
+## Navigation
 
-- Use **Expo Router** for all navigation. Routes live in `src/app/` — every file there is a screen, `_layout.tsx` files define navigators. Keep non-route code (components, hooks, utils) outside `src/app/`.
-- Import `Link`, `router`, and `useLocalSearchParams` from `expo-router`.
-- Docs: https://docs.expo.dev/router/introduction.md
+This project uses **React Navigation** (`@react-navigation/native` and `@react-navigation/bottom-tabs`). The bottom-tab navigator lives in `src/navigation/RootTabs.js`; individual screens live in `src/screens/`. Weather state is created once in `App.js` via `useWeather` and passed down to each tab as a prop, so all four tabs share the same data.
+
+Key screens:
+
+- `CurrentWeatherScreen` — search, location shortcut, pull-to-refresh, current conditions
+- `ForecastScreen` — five-day forecast for the last searched city
+- `FavoritesScreen` — saved cities persisted with AsyncStorage
+- `SettingsScreen` — Celsius/Fahrenheit toggle and daily forecast notification
+
+Shared helpers live in `src/components/`, `src/hooks/`, `src/api/`, and `src/utils/`.
 
 ## Building with EAS
 
 Use EAS to build, sign, and submit the app in the cloud (`eas build`, `eas submit`) and to ship over-the-air updates (`eas update`) — no local Xcode or Android Studio required. Run EAS CLI as `bunx eas-cli <command>` in Bun projects, or `npx eas-cli@latest <command>` otherwise; substitute that for bare `eas` in docs examples.
+
 Docs: https://docs.expo.dev/eas/index.md
 
 ## Rules
@@ -39,3 +46,5 @@ Docs: https://docs.expo.dev/eas/index.md
 - If `ios/` and `android/` directories do not exist, they are generated (Continuous Native Generation). Never create or edit them by hand — configure native behavior in `app.json` and config plugins.
 - Expo Go only includes its bundled native modules. After adding a library with native code, the app needs a development build: `npx expo run:ios|android` locally, or `eas build --profile development`.
 - Prefer recommended Expo modules over third-party libraries, and check your available skills before adding dependencies. Docs: https://docs.expo.dev/versions/latest/index.md
+- Keep API keys out of committed files. This project reads `OPENWEATHER_API_KEY` from the shell environment at Expo config time via `app.config.js`.
+- Weather state is owned by the `useWeather` hook and shared across tabs. Do not create additional weather state in screens.
